@@ -1,2 +1,5 @@
-node_modules
-.idea
+/.idea
+/dist
+/prod
+/build
+/node_modules

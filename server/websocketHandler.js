@@ -1,14 +1,14 @@
-const WebSocketServer = require('websocket').server;
-const http = require('http');
-const uuidv1 = require('uuid/v1');
-const ClientList = require('./ClientList');
-const WebSocketMessageHandler = require('./WebSocketMessageHandler');
+import WebSocket from 'websocket';
+import http from 'http';
+import uuidv1 from 'uuid/v1';
+import ClientList from './ClientsList';
+import WebSocketMessageHandler from  './WebSocketMessageHandler';
 const server = http.createServer(function(request, response) {
 });
+const WebSocketServer = WebSocket.server;
+server.listen(3937, function() { });
 
-server.listen(1337, function() { });
-
-wsServer = new WebSocketServer({
+const wsServer = new WebSocketServer({
     httpServer: server
 });
 
@@ -35,4 +35,4 @@ wsServer.on('request', function(request) {
     });
 });
 
-module.exports = wsServer;
+export { wsServer };

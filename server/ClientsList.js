@@ -1,4 +1,4 @@
-const Client = require('./Client.js');
+import Client from './Client.js';
 
 class ClientList {
     constructor(){
@@ -21,5 +21,5 @@ class ClientList {
     }
 }
 
-const clientList = new ClientList();
-module.exports = clientList;
+const clientsList = new ClientList();
+export default clientsList;
