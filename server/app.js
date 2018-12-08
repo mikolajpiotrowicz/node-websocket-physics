@@ -28,9 +28,9 @@ app.use(reactMiddleware);
 
 app.use('/', router);
 
-app.use((req, res, next) => {
-	next(new HTTPError(404));
-});
+// app.use((req, res, next) => {
+// 	next(new HTTPError(404));
+// });
 
 // noinspection JSUnusedLocalSymbols
 app.use((err, req, res, next) => {

@@ -1,42 +1,50 @@
 import React from 'react'
-import {fetchInitialData, getInitialData} from "../helpers/initialData";
-import { Stage, Layer, Rect, Text } from 'react-konva';
-import Konva from 'konva';
-const busyBraile = ['⠙', '⠸', '⢰', '⣠', '⣄', '⡆', '⠇', '⠋'];
+import { getInitialData} from "../helpers/initialData";
+import setUpControls from "../helpers/Controls";
+import {Stage, Layer, Circle} from 'react-konva';
+
+import {emitter} from "../helpers/WebSocketMessageHandler";
 
 export default class Index extends React.Component {
-	constructor() {
-		super();
-		
-		this.state = {
-			...getInitialData(),
-			counter: 0,
-		};
-	}
-	
-	async componentDidMount() {
+  constructor() {
+    super();
 
-	}
-	
+    this.state = {
+      ...getInitialData(),
+      x: 100,
+      y: 100,
+      color: '#375E97',
+      players: [],
+    };
+  }
 
-	
-	render() {
-        const width = document.documentElement.clientWidth;
-        const height = document.documentElement.scrollHeight;
-        console.log(width, height);
-		return (
-            <Stage width={width} height={height}>
-                <Layer>
-                    <Rect
-                        x={20}
-                        y={20}
-                        width={50}
-                        height={50}
-                        fill={Konva.Util.getRandomColor()}
-                        onClick={this.handleClick}
-                    />
-                </Layer>
-            </Stage>
-		)
-	}
+  async componentDidMount() {
+    setUpControls();
+    emitter.on('ENTITIES_POSITION', (e) => this.setState({ players: e }));
+  }
+
+
+  render() {
+    const width = document.documentElement.clientWidth;
+    const height = document.documentElement.scrollHeight;
+    let players = null;
+    if (this.state.players.length > 0) {
+      players = this.state.players.map(p => (
+        <Circle
+          x={p.x}
+          y={p.y}
+          radius={15}
+          fill={this.state.color}
+          onClick={this.handleClick}
+        />
+      ))
+    }
+    return (
+      <Stage width={width} height={height}>
+        <Layer>
+          {players}
+        </Layer>
+      </Stage>
+    )
+  }
 }

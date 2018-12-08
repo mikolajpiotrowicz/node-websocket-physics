@@ -1,6 +1,6 @@
 import React from 'react'
 import {Route, Switch, withRouter} from "react-router";
-import {setInitialData} from "./helpers/initialData";
+import { setInitialData } from "./helpers/initialData";
 import isNode from 'detect-node';
 import Index from "./routes/index";
 import { hot } from 'react-hot-loader';
