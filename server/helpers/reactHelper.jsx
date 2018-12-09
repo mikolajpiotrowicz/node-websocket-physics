@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOMServer from 'react-dom/server';
 import {StaticRouter} from "react-router";
 import index from '../views/index.handlebars';
-import App from "../../client/app";
 import HTTPError from "./HTTPError";
 
 const removeTags = /[&<>]/g;
@@ -26,15 +25,7 @@ export function reactMiddleware(req, res, next) {
 			case "html":
 				const initialDataJSON = JSON.stringify(initialData).replace(removeTags, tag => tagsToReplace[tag] || tag);
 				
-				res.send(index({
-					reactContent: ReactDOMServer.renderToString(
-						<StaticRouter location={req.originalUrl} context={{}}>
-							<App initialData={initialData}/>
-						</StaticRouter>,
-					),
-					initialData: initialDataJSON,
-					production: process.env.NODE_ENV === 'production',
-				}));
+				res.send(index());
 				break;
 			
 			default:

@@ -2,14 +2,20 @@ import p2 from "p2";
 import { world} from "./World";
 import WebSocketMessageHandler from "./WebSocketMessageHandler";
 
+const randomNumber = (minimum, maximum) => Math.round( Math.random() * (maximum - minimum) + minimum);
+
 class Player  {
     constructor(connection) {
         this.name = "";
+        this.id = connection.id;
         this.connection = connection;
         this.inGame = false;
         this.body = new p2.Body({
           mass: 5,
-          position: [500, 500]
+          position: [
+            randomNumber(0, 1200),
+            randomNumber(0, 800)
+          ]
         });
         const circleShape = new p2.Circle({ radius: 15 });
         this.body.addShape(circleShape);
@@ -22,7 +28,6 @@ class Player  {
     }
     setName(name) {
       this.name = name;
-      console.log(this);
     }
 
     handleMessages() {

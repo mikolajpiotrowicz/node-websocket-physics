@@ -1,4 +1,5 @@
 import Player from './Player.js';
+import { MESSAGES_TYPES } from "./Constants";
 
 class PlayersManager {
   constructor() {
@@ -7,6 +8,18 @@ class PlayersManager {
 
   createPlayer(connection) {
     const player = new Player(connection);
+
+    this.sendMessageToAll({
+      type: MESSAGES_TYPES.SEND.PLAYER_JOINED_ROOM,
+      payload: {
+        player: {
+          name: player.name,
+          id: player.id,
+          x: player.body.x,
+          y: player.body.y,
+        }
+      }
+    });
     this.players.push(player);
   }
 
@@ -25,7 +38,12 @@ class PlayersManager {
       }
     }
   }
-
+  getRoomInitialInformation(player) {
+    player.sendMessage({
+      type: MESSAGES_TYPES.SEND.ROOM_INITIALIZE,
+      payload: this.getPositions(),
+    })
+  }
   updatePositions() {
     const positions = this.getPositions();
     const clientsQuantity = this.players.length;
@@ -45,6 +63,7 @@ class PlayersManager {
         x: this.players[i].body.position[0],
         y: this.players[i].body.position[1],
         name: this.players[i].name,
+        id: this.players[i].id,
       });
     }
 

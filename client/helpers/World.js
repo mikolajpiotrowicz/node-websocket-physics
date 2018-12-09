@@ -7,8 +7,7 @@ class World {
     this.app = new PIXI.Application(width, height, {backgroundColor : 0xFFBB00});
     document.body.appendChild(this.app.view)
     this.entities = [];
-    this.start();
-    this.createPlayerSprite(100, 500);
+
 
   }
   addEntity(entity){
@@ -38,6 +37,4 @@ class World {
   }
 }
 
-const world = new World();
-
-export default world;
+export default World;

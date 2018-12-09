@@ -1,4 +1,5 @@
 import { MESSAGES_TYPES } from "./Constants";
+import PlayersManager from './PlayersManager';
 
 class WebSocketMessageHandler {
   constructor(player) {
@@ -6,25 +7,26 @@ class WebSocketMessageHandler {
   }
   handleMessage(message) {
     switch (message.type) {
-      case MESSAGES_TYPES.RECIVE.HANDSHAKE: {
+      case MESSAGES_TYPES.RECIVED.HANDSHAKE: {
         const { username } = message.payload;
         this.player.setName(username);
         this.player.joinGame();
+        PlayersManager.getRoomInitialInformation(this.player);
         break;
       }
-      case MESSAGES_TYPES.RECIVE.MOVE_UP: {
+      case MESSAGES_TYPES.RECIVED.MOVE_UP: {
         this.player.moveUp();
         break;
       }
-      case MESSAGES_TYPES.RECIVE.MOVE_DOWN: {
+      case MESSAGES_TYPES.RECIVED.MOVE_DOWN: {
         this.player.moveDown();
         break;
       }
-      case MESSAGES_TYPES.RECIVE.MOVE_LEFT: {
+      case MESSAGES_TYPES.RECIVED.MOVE_LEFT: {
         this.player.moveLeft();
         break;
       }
-      case MESSAGES_TYPES.RECIVE.MOVE_RIGHT: {
+      case MESSAGES_TYPES.RECIVED.MOVE_RIGHT: {
         this.player.moveRight();
         break;
       }

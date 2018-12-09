@@ -5,12 +5,11 @@ import App from "./client/app";
 import './client/style/style.scss';
 import {AppContainer} from "react-hot-loader";
 
-const initialData = JSON.parse(document.getElementById('initialData').innerHTML);
 
 ReactDOM.hydrate(
 	<AppContainer>
 		<BrowserRouter>
-			<App initialData={initialData}/>
+			<App />
 		</BrowserRouter>
 	</AppContainer>
 	, document.getElementById('root'));

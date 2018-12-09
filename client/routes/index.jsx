@@ -1,9 +1,7 @@
 import React from 'react'
-import { getInitialData} from "../helpers/initialData";
 import setUpControls from "../helpers/Controls";
 import { Link } from 'react-router-dom';
 import MessageFactory from '../helpers/WebSocketMessageFactory';
-import {emitter} from "../helpers/WebSocketMessageHandler";
 import { MESSAGES_TYPES } from "../helpers/Constants";
 
 export default class Menu extends React.Component {
@@ -13,7 +11,6 @@ export default class Menu extends React.Component {
     this.setUsername = this.setUsername.bind(this);
     this.state = {
       username: '',
-      ...getInitialData(),
     };
   }
 
