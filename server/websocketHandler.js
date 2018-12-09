@@ -19,7 +19,6 @@ wsServer.getUniqueID = function () {
 wsServer.on('request', function(request) {
     const connection = request.accept(null, request.origin);
     connection.id = wsServer.getUniqueID();
-    console.log('open', connection.id)
     PlayersManager.createPlayer(connection);
     PlayersManager.sendMessageToAll({
       type: "HANDSHAKE",
@@ -27,7 +26,6 @@ wsServer.on('request', function(request) {
         handshakeInformation: `New Client created with id ${connection.id}`
       }
     });
-
 
     connection.on('close', function(connection) {
         console.log('close', this.id);

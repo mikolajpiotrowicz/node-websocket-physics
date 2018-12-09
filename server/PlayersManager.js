@@ -1,40 +1,56 @@
 import Player from './Player.js';
 
 class PlayersManager {
-    constructor(){
-        this.players = [];
-    }
-    createPlayer(connection) {
-        const player = new Player(connection);
-        this.players.push(player);
-    }
-    removePlayer(connection){
-        this.players = this.players.filter((player) => player.connection.id !== connection.id);
-    }
-    sendMessageToAll(message) {
-        const clientsQuantity = this.players.length;
-        if(clientsQuantity > 0) {
-            for (let i = 0; i < clientsQuantity; i++) {
-                this.players[i].sendMessage(message);
-            }
+  constructor() {
+    this.players = [];
+  }
+
+  createPlayer(connection) {
+    const player = new Player(connection);
+    this.players.push(player);
+  }
+
+  removePlayer(connection) {
+    this.players = this.players.filter((player) => player.connection.id !== connection.id);
+  }
+
+  sendMessageToAll(message) {
+    const clientsQuantity = this.players.length;
+    if (clientsQuantity > 0) {
+      for (let i = 0; i < clientsQuantity; i++) {
+        const {inGame} = this.players[i];
+        if (inGame) {
+          this.players[i].sendMessage(message);
         }
+      }
     }
-    updatePositions(){
-        const positions = [];
-        const clientsQuantity = this.players.length;
-        if (clientsQuantity > 0) {
-          for (let i = 0; i < this.players.length; i++) {
-              positions.push({
-                x: this.players[i].body.position[0],
-                y: this.players[i].body.position[1],
-              });
-          }
-          this.sendMessageToAll({
-            type: 'ENTITIES_POSITION',
-            payload: positions
-          })
-        }
+  }
+
+  updatePositions() {
+    const positions = this.getPositions();
+    const clientsQuantity = this.players.length;
+    if (clientsQuantity > 0) {
+      this.sendMessageToAll({
+        type: 'ENTITIES_POSITION',
+        payload: positions
+      })
     }
+  };
+
+  getPositions() {
+    const positions = [];
+    const clientsQuantity = this.players.length;
+    for (let i = 0; i < clientsQuantity; i++) {
+      positions.push({
+        x: this.players[i].body.position[0],
+        y: this.players[i].body.position[1],
+        name: this.players[i].name,
+      });
+    }
+
+    return positions;
+  }
+
 }
 
 const playersManager = new PlayersManager();

@@ -4,7 +4,9 @@ import WebSocketMessageHandler from "./WebSocketMessageHandler";
 
 class Player  {
     constructor(connection) {
+        this.name = "";
         this.connection = connection;
+        this.inGame = false;
         this.body = new p2.Body({
           mass: 5,
           position: [500, 500]
@@ -15,6 +17,14 @@ class Player  {
         this.handleMessages();
 
     }
+    joinGame() {
+      this.inGame = true;
+    }
+    setName(name) {
+      this.name = name;
+      console.log(this);
+    }
+
     handleMessages() {
       const messageHandler = new WebSocketMessageHandler(this);
       this.connection.on('message', (message) => {
@@ -23,6 +33,7 @@ class Player  {
         }
       });
     }
+
     sendMessage(message) {
         const parsedMessage = JSON.stringify(message)
         this.connection.sendUTF(parsedMessage);

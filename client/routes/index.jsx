@@ -1,50 +1,49 @@
 import React from 'react'
 import { getInitialData} from "../helpers/initialData";
 import setUpControls from "../helpers/Controls";
-import {Stage, Layer, Circle} from 'react-konva';
-
+import { Link } from 'react-router-dom';
+import MessageFactory from '../helpers/WebSocketMessageFactory';
 import {emitter} from "../helpers/WebSocketMessageHandler";
+import { MESSAGES_TYPES } from "../helpers/Constants";
 
-export default class Index extends React.Component {
+export default class Menu extends React.Component {
   constructor() {
     super();
-
+    this.sendUsername = this.sendUsername.bind(this);
+    this.setUsername = this.setUsername.bind(this);
     this.state = {
+      username: '',
       ...getInitialData(),
-      x: 100,
-      y: 100,
-      color: '#375E97',
-      players: [],
     };
   }
 
   async componentDidMount() {
     setUpControls();
-    emitter.on('ENTITIES_POSITION', (e) => this.setState({ players: e }));
   }
 
+  sendUsername() {
+    const { username } = this.state;
+    MessageFactory.createMessage(MESSAGES_TYPES.SEND.HANDSHAKE, {
+      username
+    });
+  }
+
+  setUsername(e) {
+    this.setState({
+      username: e.target.value
+    })
+  }
 
   render() {
-    const width = document.documentElement.clientWidth;
-    const height = document.documentElement.scrollHeight;
-    let players = null;
-    if (this.state.players.length > 0) {
-      players = this.state.players.map(p => (
-        <Circle
-          x={p.x}
-          y={p.y}
-          radius={15}
-          fill={this.state.color}
-          onClick={this.handleClick}
-        />
-      ))
-    }
     return (
-      <Stage width={width} height={height}>
-        <Layer>
-          {players}
-        </Layer>
-      </Stage>
+      <div>
+        <div className='login'>
+          <input onChange={this.setUsername} className='login__name-input' type="text" spellCheck="false"/>
+          <div className='login__btn-wrapper'>
+            <Link onClick={this.sendUsername} className='login__start-button' to='/game'>Start</Link>
+          </div>
+        </div>
+      </div>
     )
   }
 }

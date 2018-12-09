@@ -3,6 +3,7 @@ import {Route, Switch, withRouter} from "react-router";
 import { setInitialData } from "./helpers/initialData";
 import isNode from 'detect-node';
 import Index from "./routes/index";
+import Game from './routes/game'
 import { hot } from 'react-hot-loader';
 
 class App extends React.Component {
@@ -28,11 +29,13 @@ class App extends React.Component {
 
 
 	render() {
-        const mock = () => (<h1>mock</h1>);
+        const mock = () => (<div></div>);
         const component = isNode ? mock : Index;
+        const game = isNode ? mock : Game;
 		return (
 			<Switch>
 				<Route path="/" exact component={component}/>
+        <Route path="/game" exact component={game}/>
 			</Switch>
 		)
 	}
