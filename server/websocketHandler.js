@@ -20,12 +20,7 @@ wsServer.on('request', function(request) {
     const connection = request.accept(null, request.origin);
     connection.id = wsServer.getUniqueID();
     PlayersManager.createPlayer(connection);
-    PlayersManager.sendMessageToAll({
-      type: "HANDSHAKE",
-      payload: {
-        handshakeInformation: `New Client created with id ${connection.id}`
-      }
-    });
+
 
     connection.on('close', function(connection) {
         console.log('close', this.id);

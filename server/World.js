@@ -10,12 +10,22 @@ const world = new p2.World({
 });
 
 const groundBody = new p2.Body({
-    mass: 0
+    mass: 0,
 });
-
 const groundShape = new p2.Plane();
 groundBody.addShape(groundShape);
+console.log(groundBody.position);
 world.addBody(groundBody);
+
+
+const topBody = new p2.Body({
+  mass: 0,
+  position: [0, 1000],
+});
+const topShape = new p2.Plane();
+topBody.addShape(topShape);
+world.addBody(topBody);
+console.log(topBody.position);
 
 
 

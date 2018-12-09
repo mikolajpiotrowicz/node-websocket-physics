@@ -9,9 +9,11 @@ class PlayerManager {
     this.players[id] = new Player(id, name,  x, y);
     console.log('tworze gracza', this.players);
   }
+
   removePlayer(id) {
     console.log('im removing player with id', id);
   }
+
   updatePositions(positions) {
     if (this.players.length === 0 && Object.keys(this.players).length === 0) return;
     for(let i = 0; i < positions.length; i++) {

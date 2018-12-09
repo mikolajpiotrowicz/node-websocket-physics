@@ -6,6 +6,7 @@ html, body {
   margin: 0;
   background-color: $yellow;
   font-family: "Courier New", Courier, monospace;
+  overflow: hidden;
 }
 input:focus {
   outline: none;

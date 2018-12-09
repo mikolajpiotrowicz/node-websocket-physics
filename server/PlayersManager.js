@@ -8,7 +8,12 @@ class PlayersManager {
 
   createPlayer(connection) {
     const player = new Player(connection);
-
+    player.sendMessage({
+      type: "HANDSHAKE",
+      payload: {
+        id: connection.id
+      }
+    });
     this.sendMessageToAll({
       type: MESSAGES_TYPES.SEND.PLAYER_JOINED_ROOM,
       payload: {

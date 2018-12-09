@@ -1,13 +1,18 @@
 import mitt from 'mitt';
 import {MESSAGES_TYPES} from "./Constants";
 import PlayersManager from './PlayersManager';
+import Game from './Game';
+
 const emitter = mitt();
 
 class WebSocketMessageHandler {
   static handleMessage(message) {
     switch (message.type) {
       case MESSAGES_TYPES.RECIVED.HANDSHAKE: {
-        console.log(message.payload.handshakeInformation);
+        Game.setLocalPlayer({
+          name: '',
+          id: message.payload.id,
+        });
         break;
       }
       case MESSAGES_TYPES.RECIVED.ENTITIES_POSITION: {
@@ -15,11 +20,12 @@ class WebSocketMessageHandler {
         break;
       }
       case MESSAGES_TYPES.RECIVED.ROOM_INITIALIZE: {
-        console.log('inicjalizacja', message);
         for (let i = 0; i < message.payload.length; i++) {
           const { id, name, x, y } = message.payload[i];
           PlayersManager.createPlayer(id, name, x, y);
         }
+        console.log('eee', PlayersManager.players[Game.localPlayer.id]);
+        Game.world.viewport.follow(PlayersManager.players[Game.localPlayer.id].sprite);
         break;
       }
       case MESSAGES_TYPES.RECIVED.PLAYER_JOINED_ROOM: {
