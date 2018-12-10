@@ -7,7 +7,7 @@ import { MESSAGES_TYPES } from "../helpers/Constants";
 export default class Menu extends React.Component {
   constructor() {
     super();
-    this.sendUsername = this.sendUsername.bind(this);
+    this.startGame = this.startGame.bind(this);
     this.setUsername = this.setUsername.bind(this);
     this.state = {
       username: '',
@@ -15,14 +15,19 @@ export default class Menu extends React.Component {
   }
 
   async componentDidMount() {
+    window.addEventListener('start-game', this.startGame);
     setUpControls();
   }
 
-  sendUsername() {
+  startGame(ev) {
+    console.log(ev);
     const { username } = this.state;
     MessageFactory.createMessage(MESSAGES_TYPES.SEND.HANDSHAKE, {
       username
     });
+    if(ev) {
+      this.props.history.push('/game');
+    }
   }
 
   setUsername(e) {
@@ -37,7 +42,7 @@ export default class Menu extends React.Component {
         <div className='login'>
           <input onChange={this.setUsername} className='login__name-input' type="text" spellCheck="false"/>
           <div className='login__btn-wrapper'>
-            <Link onClick={this.sendUsername} className='login__start-button' to='/game'>Start</Link>
+            <Link onClick={this.startGame} className='login__start-button' to='/game'>Start</Link>
           </div>
         </div>
       </div>

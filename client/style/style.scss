@@ -62,8 +62,11 @@ input:focus {
 .game-menu {
   &__quit {
     position: absolute;
-    bottom: 100px;
-    right: 100px;
+    bottom: 20px;
+    right: 50px;
     z-index: 2;
+
+    width: 30px;
+    height: 20px;
   }
 }

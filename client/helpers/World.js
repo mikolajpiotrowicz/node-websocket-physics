@@ -3,9 +3,9 @@ import Viewport from 'pixi-viewport';
 
 class World {
   constructor(){
-    const width = document.documentElement.clientWidth;
-    const height = document.documentElement.clientHeight - 4;
-    this.app = new PIXI.Application(width, height, {backgroundColor : 0xFFBB00});
+    this.width = document.documentElement.clientWidth;
+    this.height = document.documentElement.clientHeight - 4;
+    this.app = new PIXI.Application(this.width, this.height, {backgroundColor : 0xFFBB00});
     document.body.appendChild(this.app.view)
     this.entities = [];
     this.viewport = new Viewport({
@@ -35,6 +35,7 @@ class World {
     this.addEntity(playground);
   }
   addEntity(entity){
+    console.log(this);
     this.viewport.addChild(entity);
     this.entities.push(entity);
   }
@@ -62,9 +63,10 @@ class World {
     return graphics;
   }
   createText(text, x, y) {
-    const textObject = new PIXI.Text(text, {fontFamily : 'Arial', fontSize: 18, fill : 0x000000, align : 'center'})
+    const textObject = new PIXI.Text(text, {fontFamily : 'Arial', fontSize: 16, fill : 0x000000});
     textObject.x = x;
     textObject.y = y;
+    textObject.anchor.set(0.5);
     this.addEntity(textObject);
 
     return textObject;

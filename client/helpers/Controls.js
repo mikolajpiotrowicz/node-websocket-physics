@@ -26,6 +26,11 @@ const mountKeyListener = () => {
         MessagesFactory.createMessage(MESSAGE_TYPES.MOVE_RIGHT);
         break;
       }
+      case 'Enter': {
+        const event = new Event('start-game');
+        window.dispatchEvent(event);
+        break;
+      }
       default: {
         console.log(e.key, 'inny klawisz');
       }

@@ -10,3 +10,6 @@ router.get('/', (req, res) => {
 	res.react(initialData);
 });
 
+router.get('/game', (req, res) => {
+  res.redirect('/');
+});
