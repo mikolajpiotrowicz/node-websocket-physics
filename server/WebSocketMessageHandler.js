@@ -10,7 +10,7 @@ class WebSocketMessageHandler {
       case MESSAGES_TYPES.RECIVED.HANDSHAKE: {
         const { username } = message.payload;
         this.player.setName(username);
-        this.player.joinGame();
+        this.player.joinGame()
         PlayersManager.getRoomInitialInformation(this.player);
         break;
       }

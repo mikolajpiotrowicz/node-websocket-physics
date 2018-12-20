@@ -1,5 +1,5 @@
 import p2 from "p2";
-import { world} from "./World";
+import World from "./World";
 import WebSocketMessageHandler from "./WebSocketMessageHandler";
 
 const randomNumber = (minimum, maximum) => Math.round( Math.random() * (maximum - minimum) + minimum);
@@ -19,7 +19,8 @@ class Player  {
         });
         const circleShape = new p2.Circle({ radius: 15 });
         this.body.addShape(circleShape);
-        world.addBody(this.body);
+        console.log(World, 'swiat');
+        World.world.addBody(this.body);
         this.handleMessages();
 
     }

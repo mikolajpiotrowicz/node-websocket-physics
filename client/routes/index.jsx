@@ -20,7 +20,6 @@ export default class Menu extends React.Component {
   }
 
   startGame(ev) {
-    console.log(ev);
     const { username } = this.state;
     MessageFactory.createMessage(MESSAGES_TYPES.SEND.HANDSHAKE, {
       username
@@ -39,10 +38,12 @@ export default class Menu extends React.Component {
   render() {
     return (
       <div>
-        <div className='login'>
-          <input onChange={this.setUsername} className='login__name-input' type="text" spellCheck="false"/>
-          <div className='login__btn-wrapper'>
-            <Link onClick={this.startGame} className='login__start-button' to='/game'>Start</Link>
+        <div className='login '>
+          <div className='login__content-wrapper'>
+            <input onChange={this.setUsername} className='login__name-input bounceIn' type="text" spellCheck="false"/>
+            <div className='login__btn-wrapper'>
+              <Link onClick={this.startGame} className='login__start-button bounceIn' to='/game'>Start</Link>
+            </div>
           </div>
         </div>
       </div>

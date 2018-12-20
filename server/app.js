@@ -8,9 +8,11 @@ import {router} from "./routes/index";
 import {reactMiddleware} from "./helpers/reactHelper";
 import HTTPError from "./helpers/HTTPError";
 import { wsServer } from "./websocketHandler";
-import StartPhysics from "./World";
+import World from "./World";
 const app = express();
 
+
+World.start();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -35,7 +37,7 @@ app.use('/', router);
 // noinspection JSUnusedLocalSymbols
 app.use((err, req, res, next) => {
 	console.error(err);
-	
+
 	const code = err.HTTPcode || 500;
 	const result = {};
 	result.error = {

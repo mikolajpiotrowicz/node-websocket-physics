@@ -7,7 +7,6 @@ class PlayerManager {
 
   createPlayer(id, name,  x, y) {
     this.players[id] = new Player(id, name,  x, y);
-    console.log('tworze gracza', this.players);
   }
 
   removePlayer(id) {

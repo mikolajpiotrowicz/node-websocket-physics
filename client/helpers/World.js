@@ -1,41 +1,54 @@
 import * as PIXI from "pixi.js";
+import * as Filters from 'pixi-filters';
 import Viewport from 'pixi-viewport';
 
 class World {
   constructor(){
     this.width = document.documentElement.clientWidth;
     this.height = document.documentElement.clientHeight - 4;
-    this.app = new PIXI.Application(this.width, this.height, {backgroundColor : 0xFFBB00});
+    this.app = new PIXI.Application(this.width, this.height, {antialias: true, backgroundColor : 0x5c5c5c});
     document.body.appendChild(this.app.view)
     this.entities = [];
     this.viewport = new Viewport({
       screenWidth: window.innerWidth,
       screenHeight: window.innerHeight,
-      worldWidth: 1000,
-      worldHeight: 1000,
-
+      worldWidth: 1920,
+      worldHeight: 1080,
       interaction: this.app.renderer.interaction // the interaction module is important for wheel() to work properly when renderer.view is placed or scaled
     });
-
-// add the viewport to the stage
     this.app.stage.addChild(this.viewport);
-
-// activate plugins
+    this.glowEffect = new Filters.GlowFilter(35, 2, 0.2, 0xFF0000, 1);
+    this.glowEffect.padding = 50;
+    console.log(this.app, 'app');
     this.viewport
       .drag()
       .pinch()
       .wheel()
       .decelerate();
-
-    const playground = new PIXI.Graphics();
-    playground.beginFill(0xFF0000);
-    playground.lineStyle(0);
-    playground.drawRect(-5000, -15, 12000, 700);
-    playground.endFill();
-    this.addEntity(playground);
+    this.isGrowing = false;
+    this.glowRadiusInterval = setInterval(() => {
+      if (this.isGrowing) {
+        const color = 0xFF0000 - (256 * 0.181) - (256 * 256 * 0.181) - (256 * 256 * 256 * 0.181);
+        this.glowEffect.color = color;
+        this.glowEffect.distance++;
+        if(this.glowEffect.distance >= 45) {
+          this.isGrowing = false;
+        }
+      }
+      else {
+        const color = 0xFF0000 - (256 * 0.181) + (256 * 256 * 0.181) + (256 * 256 * 256 * 0.181);
+        this.glowEffect.color = color;
+        this.glowEffect.distance--;
+        if(this.glowEffect.distance <= 20) {
+          this.isGrowing = true;
+        }
+      }
+    }, 45);
+    let texture = PIXI.Texture.fromImage('static/tile.jpg');
+    var bgTilingSprite = new PIXI.extras.TilingSprite(texture, 1920, 1080);
+    this.addEntity(bgTilingSprite);
   }
   addEntity(entity){
-    console.log(this);
     this.viewport.addChild(entity);
     this.entities.push(entity);
   }
@@ -43,11 +56,11 @@ class World {
     this.app.ticker.add(function(delta) {
       // just for fun, let's rotate mr rabbit a little
       // delta is 1 if running at 100% performance
-      console.log(delta);
       // creates frame-independent transformation
       // p.rotation += 0.1 * delta;
     });
   }
+
   createPlayerSprite(x, y) {
     const graphics = new PIXI.Graphics();
     graphics.beginFill(0x000000);
@@ -58,6 +71,10 @@ class World {
     graphics.pivot.y = graphics.height / 2;
     graphics.x = x;
     graphics.y = y;
+    graphics.filters = [ this.glowEffect ];
+    graphics.boundsPadding = 20;
+    graphics.cacheAsBitmap = true;
+
     this.entities.push(graphics);
     this.addEntity(graphics);
     return graphics;

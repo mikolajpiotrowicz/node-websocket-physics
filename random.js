@@ -341,7 +341,6 @@ window.Game = {};
       runningId = setInterval(function(){
         gameLoop();
       }, INTERVAL);
-      console.log("play");
     }
   }
 

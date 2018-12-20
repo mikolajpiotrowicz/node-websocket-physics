@@ -1,42 +1,41 @@
 import p2 from 'p2';
+import { createPlane } from "./helpers/p2helpers";
 import PlayersManager from './PlayersManager';
 
-const tick = () => {
-  PlayersManager.updatePositions({});
-};
 
-const world = new p2.World({
-    gravity:[0, 0]
-});
+class World {
+    constructor() {
+        this.world = new p2.World({
+            gravity:[0, -100],
+        });
+        this.timeStep = 1 / 60;
+        this.gameWidth = 1920;
+        this.gameHeight = 1080;
+        this.playerSize = 15;
+        this.createWorldBounds();
+    }
 
-const groundBody = new p2.Body({
-    mass: 0,
-});
-const groundShape = new p2.Plane();
-groundBody.addShape(groundShape);
-console.log(groundBody.position);
-world.addBody(groundBody);
+    createWorldBounds() {
+        this.bottomBound = createPlane([0, 0 +  this.playerSize ], 0, this.world);
+        this.topBound = createPlane([0, this.gameHeight + this.playerSize], Math.PI, this.world); // Top
+        this.leftBound = createPlane([0 + this.playerSize , 0], -Math.PI / 2, this.world); // Left
+        this.rightBound = createPlane([this.gameWidth + this.playerSize, 0], Math.PI / 2, this.world); // Right    }
+    }
 
+    step() {
+        PlayersManager.updatePositions({});
+    }
 
-const topBody = new p2.Body({
-  mass: 0,
-  position: [0, 1000],
-});
-const topShape = new p2.Plane();
-topBody.addShape(topShape);
-world.addBody(topBody);
-console.log(topBody.position);
+    start() {
+        this.runInterval = setInterval(() => {
+            this.world.step(this.timeStep);
+            this.step();
 
+        }, 1000 * this.timeStep);
 
+    }
+}
 
-const timeStep = 1 / 60; // seconds
-const run = setInterval(() => {
-    world.step(timeStep);
-    tick();
+const world = new World();
 
-}, 1000 * timeStep);
-
-export default run;
-export { world };
-
-
+export default world;

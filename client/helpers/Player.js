@@ -6,13 +6,12 @@ export default class Player {
     this.name = name;
     this.sprite = Game.world.createPlayerSprite(x, y);
     this.nameSprite = Game.world.createText(name, x, y);
+
   }
 
   updatePosition(x, y) {
-    console.log(x, y);
     this.sprite.x = x;
     this.sprite.y = y;
-    console.log(this.nameSprite.width);
     this.nameSprite.x = x - this.sprite.width / 2;
     this.nameSprite.y = y - 50;
   }
